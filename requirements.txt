@@ -3,7 +3,7 @@ ipykernel
 jupyter
 seaborn
 matplotlib
-pytorch
+torch
 keras
 numpy
 scikit-learn
