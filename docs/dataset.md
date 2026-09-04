@@ -5,12 +5,12 @@
 
 Possíveis base para análise preditívas:
 
-|psl.noaa.gov/data/timeseries/month/DS/ONI/| 
-|epe.gov.br/pt/publicacoes-dados-abertos/dados-abertos/dados-do-consumo-mensal-de-energia-eletrica| 
-|dadosabertos.aneel.gov.br/dataset/samp|
-|servicodados.ibge.gov.br/api/docs/agregados| 
-|ipeadata.gov.br/api| 
-|dados.ons.org.br| 
+psl.noaa.gov/data/timeseries/month/DS/ONI/ <br>
+epe.gov.br/pt/publicacoes-dados-abertos/dados-abertos/dados-do-consumo-mensal-de-energia-eletrica<br> 
+dadosabertos.aneel.gov.br/dataset/samp<br>
+servicodados.ibge.gov.br/api/docs/agregados<br> 
+ipeadata.gov.br/api <br>
+dados.ons.org.br <br>
 
 Sobre as bases
 
