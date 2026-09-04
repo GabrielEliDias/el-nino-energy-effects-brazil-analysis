@@ -1,2 +1,9 @@
 requests
 ipykernel
+jupyter
+seaborn
+matplotlib
+pytorch
+keras
+numpy
+scikit-learn
