@@ -1,0 +1,10 @@
+# Pasta geral com os dados e .env
+.venv
+data/
+
+# Claude
+.claude
+
+
+# Vscode
+.vscode/
