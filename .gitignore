@@ -8,3 +8,6 @@ data/
 
 # Vscode
 .vscode/
+
+# Datasets
+Bases/
