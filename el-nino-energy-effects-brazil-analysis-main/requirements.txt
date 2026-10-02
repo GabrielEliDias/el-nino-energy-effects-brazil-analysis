@@ -1,9 +1,0 @@
-requests
-ipykernel
-jupyter
-seaborn
-matplotlib
-torch
-keras
-numpy
-scikit-learn
