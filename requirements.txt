@@ -7,3 +7,6 @@ torch
 keras
 numpy
 scikit-learn
+pandas
+openpyxl
+pyarrow

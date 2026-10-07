@@ -11,3 +11,6 @@ data/
 
 # Datasets
 Bases/
+
+# Python
+__pycache__/
