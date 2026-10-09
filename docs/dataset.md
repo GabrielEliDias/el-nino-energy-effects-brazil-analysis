@@ -33,7 +33,8 @@ O fenômeno El Niño eleva as temperaturas médias e altera a distribuição de 
 
 Tudo é gerado por `notebooks/ingestao.ipynb`. Cada execução é uma **carga** com
 `ID_CARGA` (`YYYYmmddTHHMMSSZ`, UTC); nada é sobrescrito, a carga nova fica ao lado das
-anteriores. Janela de análise: 2015–2025. A silver ainda não existe.
+anteriores. Janela de análise: 2004–2025. A silver (`notebooks/silver.ipynb`) e a gold
+(`notebooks/gold.ipynb`) partem daqui; como rodar tudo está no `README.md`.
 
 | Camada | Caminho | Conteúdo |
 | --- | --- | --- |
@@ -46,7 +47,7 @@ anteriores. Janela de análise: 2015–2025. A silver ainda não existe.
 | `epe_consumo_subsistema` | `epe_consumo/consumo_mensal_historico.xlsx`, aba `CONSUMO E NUMCONS SAM` | linha da aba |
 | `epe_consumo_uf` | mesmo arquivo, aba `CONSUMO E NUMCONS SAM UF` | linha da aba |
 | `noaa_oni` | `noaa_oni/oni.data` | um ano (`ano`, `m01`..`m12`) |
-| `openmeteo_clima` | `openmeteo_clima/clima_<UF>_<ano>.json` (27 × 11 páginas) | um dia de uma capital |
+| `openmeteo_clima` | `openmeteo_clima/clima_<UF>_<ano>.json` (27 × 22 páginas) | um dia de uma capital |
 
 Para ler: `pd.read_parquet("data/bronze/<tabela>/")` junta todas as cargas. Para
 deduplicar entre cargas, use `_hash_registro`: o mesmo dado gera o mesmo hash.
@@ -56,7 +57,7 @@ número de campos errado, campo obrigatório vazio e arrays desalinhados. Faixa,
 e calendário são papel da silver.
 
 **EPE**
-- Aba por subsistema (região × subsistema × classe × cativo/livre) e aba por UF. Os dados vão de 2004 em diante; a janela 2015–2025 é recortada na silver.
+- Aba por subsistema (região × subsistema × classe × cativo/livre) e aba por UF. Os dados vão de 2004 em diante; a silver recorta a janela 2004–2025.
 - `Data` vem como `AAAAMMDD` em texto. `DataVersao` muda a cada publicação da EPE, o que muda o hash da linha inteira.
 - `Sistema = SISTEMAS ISOLADOS` está fora do SIN.
 - Há consumo negativo: são estornos do mercado livre, publicados assim pela EPE.
@@ -72,7 +73,10 @@ e calendário são papel da silver.
 **Open-Meteo**
 - A paginação é por janela de tempo: uma página por capital × ano. As variáveis são `temperature_2m_mean`, `temperature_2m_max` e `precipitation_sum`, com unidades no sidecar (`_unidades`).
 - `latitude`/`longitude` do registro são da **célula de grade** que a API usou, não do ponto pedido. As duas coordenadas estão no sidecar, e a UF está no nome do arquivo raw (`_arquivo_raw`).
-- O mapeamento UF → subsistema e a ponderação (por exemplo, pelo consumo da aba UF da EPE) ficam para a silver.
+- A paginação tem checkpoint: uma página (UF × ano) já completa na bronze não é pedida de novo, e só a
+  primeira carga baixa as 594 páginas.
+- A silver mantém o subsistema de cada linha de consumo por UF; a gold calcula os pesos fixos de cada UF pelo consumo
+  do período-base 2004–2014 (`gold_dim_uf`) e os usa para agregar o clima por região e Brasil.
 
 ## Fontes avaliadas e não usadas
 
