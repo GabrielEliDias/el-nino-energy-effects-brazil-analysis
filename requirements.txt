@@ -1,14 +1,24 @@
-requests
-ipykernel
-jupyter
-seaborn
-matplotlib
-openpyxl
-torch
-keras
-numpy
-scikit-learn
-pandas
-openpyxl
-pyarrow
-fastparquet
+# Versões testadas com Python 3.14.
+
+# pipeline (notebooks ingestao, silver e gold)
+requests==2.34.2
+pandas==3.0.6
+numpy==2.5.3
+pyarrow==25.0.1
+openpyxl==3.1.5
+python-dateutil==2.9.0.post0
+jupyter==1.1.1
+ipykernel==7.4.0
+nbconvert==7.17.1
+
+# dashboard (app/)
+streamlit==1.65.0
+altair==6.3.0
+
+# modelagem e EDA (ainda não usados pelo pipeline)
+scikit-learn==1.9.1
+torch==2.14.1
+keras==3.15.1
+matplotlib==3.11.2
+seaborn==0.13.2
+fastparquet==2026.9.0
