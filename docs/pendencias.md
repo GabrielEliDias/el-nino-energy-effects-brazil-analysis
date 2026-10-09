@@ -11,7 +11,7 @@ quando uma pendência fechar.
 | **1. Bases e cruzamento** | ✅ Três instituições (EPE, NOAA, Open-Meteo) e três formatos (XLSX, texto, JSON), com fonte por API e por arquivo. A chave está documentada, e os casamentos e órfãos são reportados (7.128 UF-meses, 0 órfãos). Licença, URL e data de coleta estão no dicionário. | [`dicionario_de_dados.md`](dicionario_de_dados.md), [`qualidade_dos_dados.md`](qualidade_dos_dados.md) §4 |
 | **2. Ingestão** | ✅ Três formas: arquivo, API REST paginada com retry/backoff e carga incremental com checkpoint. Metadados técnicos em toda a bronze, quarentena com motivo e idempotência provada. | `notebooks/ingestao.ipynb`, [`qualidade_dos_dados.md`](qualidade_dos_dados.md) §1 e §5 |
 | **3. Medalhão** | ✅ Granularidade em uma frase e PK verificada em código para as 16 tabelas. A gold não limpa nada. | [`dicionario_de_dados.md`](dicionario_de_dados.md) → Tabelas |
-| **4. Repositório** | ⚠️ Prontos: `requirements.txt` com versões fixadas, README do zero, `data/` fora do Git, dicionário versionado. **Falta: distribuir os commits entre o grupo** (item 2.2). As sementes só valem quando houver modelo. | `README.md`, `requirements.txt` |
+| **4. Repositório** | ⚠️ Prontos: `requirements.txt` com versões fixadas, README do zero, `data/` fora do Git, dicionário versionado. **Atenção: os commits até aqui estão em um único autor** (item 2.2). As sementes só valem quando houver modelo. | `README.md`, `requirements.txt` |
 | **5. ML-Ready** | ⚠️ Os 9 elementos e o checklist anti-vazamento estão documentados, e a gold prova que não há vazamento. **Falta: o notebook de modelagem** (item 2.1); os itens 3 e 4 do checklist só fecham com ele. | [`ml-ready.md`](ml-ready.md), [`anti-vazamentos.md`](anti-vazamentos.md) |
 | **6. Decisão** | ⚠️ Há uma proposta completa: decisor, ação, custos de FP/FN, limiar e limitações. **Falta: o grupo validar o decisor e a premissa de custo 3:1** (item 2.3). | [`decisao.md`](decisao.md) |
 | **§9. Uso de IA** | ⚠️ A seção existe no README. **Falta: o grupo completar quem usou o quê** e garantir que todos sabem explicar o código (item 2.4). | `README.md` → Uso de IA |
@@ -38,11 +38,19 @@ sem mudar as definições de lá:
 8. Avaliar o teste **uma única vez** e reportar o resultado mesmo que o modelo não supere B1. Um
    resultado honesto vale mais que um alto.
 
-### 2.2 Distribuir os commits antes do push (essencial)
+### 2.2 Autoria dos commits daqui em diante (essencial)
 
-Os commits da branch `feat/ml-ready-dashboard` estão todos no mesmo autor e no mesmo dia. O enunciado
-trata isso como trabalho de uma pessoa só. Cada integrante deve refazer ou commitar a parte que vai
-defender **antes** do `git push`, para não reescrever uma branch já publicada.
+Os commits de 2026-10-09 (branch `feat/ml-ready-dashboard`) estão todos no mesmo autor e no mesmo dia,
+e já entraram na `main` pelos PRs #1 e #2. O enunciado trata um histórico assim como trabalho de uma
+pessoa só. Reescrever a `main` para trocar o autor não compensa: quebraria o histórico de quem já
+puxou.
+
+O que fazer:
+- **Daqui em diante, cada integrante commita o que fizer**, com o próprio usuário do Git
+  (`git config user.name` e `user.email`). Isso vale para o notebook de modelagem (2.1), a revisão do
+  texto de `app/analise.md`, a declaração de IA (2.4) e a validação da decisão (2.3).
+- **Na defesa, dizer como o trabalho foi dividido**, com honestidade, e cada um apresentar a parte que
+  domina (2.4).
 
 ### 2.3 Validar a decisão (grupo)
 
@@ -75,8 +83,14 @@ Pontos que a banca tende a perguntar e que cada integrante deve saber explicar:
 - **`src/` e `usabilidade.ipynb`.** O `src/01_extract.py` está desatualizado e não é usado, e
   `usabilidade.ipynb` lê uma pasta fora do repositório (`../Bases/`). Apagar ou explicar no README, para
   não confundir a banca.
-- **Publicar.** Fazer `git push -u origin feat/ml-ready-dashboard` e abrir o PR. O `gh` não está
-  instalado nesta máquina; o texto do PR foi preparado na conversa com o Claude.
+- **Publicar os commits de documentação.** Os PRs #1 e #2 já foram integrados à `main`. Os commits de
+  documentação feitos depois deles (dicionário gerado, qualidade, ML-Ready, anti-vazamento, decisão e
+  este arquivo) sobem com `git push` na branch `feat/ml-ready-dashboard` e entram por um novo PR (#3).
+  Depois, atualizar a `main` local com `git fetch origin main:main`. A `main` local estava 10 commits
+  atrás, e foi por isso que um `git push origin main` foi rejeitado; nada foi perdido.
+- **Enunciado no repositório.** `docs/Projeto_Da_Ingestao_a_Decisao.md` ainda não está no Git, e este
+  arquivo aponta para ele. Se o grupo concordar em versionar o enunciado, commitar o arquivo; senão,
+  trocar o link por uma menção ao nome do arquivo.
 
 ### 2.6 Rotina depois de rodar o pipeline
 
