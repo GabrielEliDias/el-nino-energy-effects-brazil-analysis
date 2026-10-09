@@ -3,8 +3,13 @@
 Projeto integrador (CESUPA): pipeline de dados público → Bronze → Silver → Gold → dashboard,
 para responder **como a presença do El Niño influencia o consumo de energia elétrica no Brasil**.
 Especificação e armadilhas de cada base: [`docs/dataset.md`](docs/dataset.md).
-Base ML-Ready, checklist anti-vazamento e decisão proposta:
-[`docs/modelagem_e_decisao.md`](docs/modelagem_e_decisao.md).
+Documentação em `docs/`:
+- [`dicionario_de_dados.md`](docs/dicionario_de_dados.md) — fontes, granularidade e colunas de cada tabela, cruzamento e descartes (gerado);
+- [`qualidade_dos_dados.md`](docs/qualidade_dos_dados.md) — quarentena, deduplicação, cruzamento e idempotência;
+- [`ml-ready.md`](docs/ml-ready.md) — rótulo, coorte, t0, janelas, split, baseline e métrica;
+- [`anti-vazamentos.md`](docs/anti-vazamentos.md) — o que foi corrigido, como provamos e o checklist;
+- [`decisao.md`](docs/decisao.md) — decisor, ação, custos de erro, limiar e limitações;
+- [`pendencias.md`](docs/pendencias.md) — situação por requisito, o que falta e roteiro da defesa.
 
 ## Fontes
 
@@ -33,6 +38,7 @@ for nb in ingestao silver gold; do
 done
 cd ..
 
+python scripts/gerar_dicionario.py   # atualiza docs/dicionario_de_dados.md (commitar se mudar)
 streamlit run app/main.py
 ```
 

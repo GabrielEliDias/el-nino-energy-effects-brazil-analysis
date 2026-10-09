@@ -111,6 +111,11 @@ next to the old ones, nothing is overwritten. `data/` is gitignored and re-runna
   columns in the first month, `ar_y_log_lag12`/`y_yoy_*` in the first 12 months,
   `y_log_*`/`pct_livre` where summed consumption ≤ 0, ENSO intensity/episode columns in
   neutral months.
+- **docs** — `dicionario_de_dados.md` is **generated** by `scripts/gerar_dicionario.py` from the
+  dictionaries/reports in `data/` (gitignored); rerun it after gold and never edit it by hand. The
+  rest is hand-written: `qualidade_dos_dados.md`, `ml-ready.md`, `anti-vazamentos.md`, `decisao.md`,
+  `pendencias.md` (status vs. the course brief, `Projeto_Da_Ingestao_a_Decisao.md`). Keep their
+  numbers in sync with the data when the pipeline output changes.
 - **app** — Streamlit dashboard (`streamlit run app/main.py` from the repo root). Reads only
   `data/gold/`; `main.py` routes via `st.navigation`, the page is `pages/main_page.py`,
   gold loading and aggregations live in `components/metrics.py`. The commentary under each chart
