@@ -113,7 +113,9 @@ next to the old ones, nothing is overwritten. `data/` is gitignored and re-runna
   neutral months.
 - **app** — Streamlit dashboard (`streamlit run app/main.py` from the repo root). Reads only
   `data/gold/`; `main.py` routes via `st.navigation`, the page is `pages/main_page.py`,
-  gold loading and aggregations live in `components/metrics.py`.
+  gold loading and aggregations live in `components/metrics.py`. The commentary under each chart
+  comes from `app/analise.md` (one `## <key>` section per chart, re-read on every page load):
+  edit the text there, not in the page code.
 
 Analysis window is 2004–2025 (`START_YEAR`/`END_YEAR` in `ingestao.ipynb`, `JANELA_INI`/`JANELA_FIM` in
 `silver.ipynb`). Gold derives its window from silver and fixes the baseline for climate normals and
