@@ -11,3 +11,4 @@ scikit-learn
 pandas
 openpyxl
 pyarrow
+fastparquet
