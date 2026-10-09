@@ -58,6 +58,21 @@ def efeito_por_fase(serie):
     return r
 
 
+@st.cache_data
+def efeito_regiao_classe(fato, dim_enso, dim_tempo, k, excluir_covid):
+    """El Niño − neutro (p.p.) para cada região × classe, mais as linhas/colunas de total (brasil, todas)."""
+    regioes, classes = sorted(fato["regiao"].unique()), sorted(fato["classe"].unique())
+    linhas = []
+    for reg in regioes + ["brasil"]:
+        for cls in classes + ["todas"]:
+            s = com_enso(consumo_mensal(fato, regioes if reg == "brasil" else [reg],
+                                        classes if cls == "todas" else [cls]), dim_enso, dim_tempo, k)
+            e = efeito_por_fase(sem_covid(s) if excluir_covid else s).set_index("fase_enso")
+            linhas.append({"regiao": reg, "classe": cls, "el_nino_pp": e.loc["el_nino", "dif_vs_neutro"],
+                           "n_meses": int(e.loc["el_nino", "n_meses"])})
+    return pd.DataFrame(linhas)
+
+
 def clima_por_fase(clima_agr, dim_enso, k, regioes):
     """Anomalia média de temperatura e chuva por escopo (regiões escolhidas + Brasil) e fase do ENSO em t-k."""
     c = clima_agr[(clima_agr["escopo"] == "brasil") | clima_agr["id_escopo"].isin(regioes)]
