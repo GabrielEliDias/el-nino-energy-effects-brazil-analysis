@@ -3,6 +3,8 @@
 Projeto integrador (CESUPA): pipeline de dados público → Bronze → Silver → Gold → dashboard,
 para responder **como a presença do El Niño influencia o consumo de energia elétrica no Brasil**.
 Especificação e armadilhas de cada base: [`docs/dataset.md`](docs/dataset.md).
+Base ML-Ready, checklist anti-vazamento e decisão proposta:
+[`docs/modelagem_e_decisao.md`](docs/modelagem_e_decisao.md).
 
 ## Fontes
 
