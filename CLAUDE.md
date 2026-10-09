@@ -19,9 +19,10 @@ Read it before touching ingestion or building silver.
 
 ## State of the repo
 
-Ingestion was rewritten from scratch: **`notebooks/ingestao.ipynb` is the only live
-notebook** and it stops at bronze. Silver is the next stage and **another person owns it** —
-don't build silver unless asked. The old per-source notebooks (`eda-energy`, `eda-noa`,
+Ingestion was rewritten from scratch. Live notebooks: **`notebooks/ingestao.ipynb`**
+(stops at bronze), **`notebooks/silver.ipynb`** (bronze → `data/silver/`) and
+**`notebooks/gold.ipynb`** (silver → `data/gold/`). Silver is **owned by another person** —
+change it only when asked (the 2004–2025 window change was an explicit request). The old per-source notebooks (`eda-energy`, `eda-noa`,
 `eda-open`) were deleted; their silver code is in git history (and in `stash@{0}` for the
 uncommitted last versions) if it's ever useful as reference.
 
@@ -42,8 +43,8 @@ cd notebooks && jupyter nbconvert --to notebook --execute ingestao.ipynb --outpu
 ```
 
 The notebook must run with `notebooks/` as the working directory — paths are built from
-`Path.cwd().parent`. One run takes ~8 min (297 Open-Meteo pages, 1 s apart to stay under
-the free-tier rate limit). Its built-in checks: `testar_quarentena()` (synthetic bad lines
+`Path.cwd().parent`. One run takes ~16 min (594 Open-Meteo pages, 1 s apart to stay under
+the free-tier rate limit; ~4,600 weighted calls, close to the 5,000/h cap — run it once). Its built-in checks: `testar_quarentena()` (synthetic bad lines
 must land in quarantine) and a final cell asserting sidecars, metadata columns, unique
 hashes and expected counts. No tests, linter, or build.
 
@@ -63,13 +64,18 @@ next to the old ones, nothing is overwritten. `data/` is gitignored and re-runna
   *structural* parsing (encoding, field count, empty required field, misaligned arrays),
   with `_registro_bruto` and `_motivo`. Business rules (ranges, the `-99.9` sentinel,
   calendar) are silver's job, not quarantine's.
-- **silver** — not built yet. Intended shape: one parquet per source with a `TIPOS` dict, a
-  `CHAVE` list (the grain) and a `validar()` asserting columns, dtypes, key uniqueness,
-  nulls and calendar completeness. Dedupe loads by `_hash_registro`.
-- **gold** — not started. Model features go here (ONI lag ≥ 1, seasonality, sklearn matrix).
+- **silver** — `notebooks/silver.ipynb` → `data/silver/*.parquet`: typed, deduplicated by
+  load (newest wins), business rules applied, idempotent (hash-proven).
+- **gold** — `notebooks/gold.ipynb` → `data/gold/*.parquet`: dimensions (`gold_dim_tempo`,
+  `gold_dim_enso`, `gold_dim_uf`), fact (`gold_fato_consumo_uf_mes`), climate (normals,
+  anomalies, weighted aggregates) and the model table `gold_features_uf_mes`. Lags are by
+  date, never by row position. `fase_enso` is retrospective (uses future months): it stays
+  descriptive in `gold_dim_enso`; features use only the causal flags. No train/test split in gold.
 - `app/` — Streamlit-shaped dashboard, empty.
 
-Analysis window is 2015–2025 (`START_YEAR`/`END_YEAR` in the notebook).
+Analysis window is 2004–2025 (`START_YEAR`/`END_YEAR` in `ingestao.ipynb`, `JANELA_INI`/`JANELA_FIM` in
+`silver.ipynb`). Gold derives its window from silver and fixes the baseline for climate normals and
+weights at 2004–2014 (`BASE_ANOS`).
 
 ### Data sources
 
